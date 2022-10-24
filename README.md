@@ -4,7 +4,7 @@ First version of WARP+ GB adder that supports http, socks4 and socks5 proxies at
 
 With checked proxies and 100 threads I was able to reach speed of about 10 gb / 3 seconds. But got banned shortly after that.
 
-I would recommend running it with about 50-70 threads.
+I would recommend running it with about 50-70 threads if you are using checked proxies. Otherwise you can set it above 100 if you want.
 
 It also doesn't stop after running out of proxies. It will start over when it gets to the end.
 
