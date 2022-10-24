@@ -55,7 +55,7 @@ namespace Free_WARP_
 
             if (running)
             {
-                CreateListsForThreads();
+                Start();
                 startButton.ForeColor = Color.FromArgb(242, 48, 55);
                 startButton.Text = "Stop";
             }
@@ -100,10 +100,8 @@ namespace Free_WARP_
         }
 
 
-
-
-        private void CreateListsForThreads()
-        {           
+        private void Start()
+        {
             var c = proxiesList.Count / threads;
             var chunked = proxiesList.ChunkBy(c > 0 ? c : 1);
 
@@ -114,7 +112,7 @@ namespace Free_WARP_
                     ProxyCheck check = new ProxyCheck(item);
                     proxyThreads.Add(check);
 
-                    while (running && check.Proxies.Count > 0)
+                    while (running)
                     {
                         check.StartChecking();
                         Thread.Sleep(10000);
@@ -247,7 +245,6 @@ namespace Free_WARP_
         public class ProxyCheck
         {
             public ConcurrentDictionary<Proxy, int> Proxies { get; protected set; } = new ConcurrentDictionary<Proxy, int>();
-            private int timeOut = 3000;
 
             public ProxyCheck(List<Proxy> proxies)
             {
@@ -256,12 +253,6 @@ namespace Free_WARP_
                 {
                     Proxies.TryAdd(proxies[i], i);
                 }
-            }
-
-            public virtual ProxyCheck SetTimeout(int timeout)
-            {
-                timeOut = timeout;
-                return this;
             }
 
             public void StartChecking()
