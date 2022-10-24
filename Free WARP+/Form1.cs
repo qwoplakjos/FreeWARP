@@ -257,9 +257,8 @@ namespace Free_WARP_
 
             public void StartChecking()
             {
-                var list = new ConcurrentDictionary<Proxy, int>(Proxies);
 
-                foreach (var item in list)
+                foreach (var item in Proxies)
                 {
                     Check(item);
                 }
