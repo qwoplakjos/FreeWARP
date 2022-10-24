@@ -38,6 +38,19 @@ namespace Free_WARP_
 
         private void startButton_Click(object sender, EventArgs e)
         {
+            if (!int.TryParse(threadTextbox.Text, out int count))
+            {
+                MessageBox.Show("Please enter correct number of threads.");
+                return;
+            }
+
+            if (proxiesList.Count == 0)
+            {
+                MessageBox.Show("No proxies!");
+                return;
+            }
+
+
             running = !running;
 
             if (running)
@@ -90,24 +103,9 @@ namespace Free_WARP_
 
 
         private void CreateListsForThreads()
-        {
-            if (!int.TryParse(threadTextbox.Text, out int count))
-            {
-                MessageBox.Show("Please enter correct number of threads.");
-                return;
-            }
-
-            if (proxiesList.Count == 0)
-            {
-                MessageBox.Show("No proxies!");
-                return;
-            }
-
+        {           
             var c = proxiesList.Count / threads;
             var chunked = proxiesList.ChunkBy(c > 0 ? c : 1);
-
-
-
 
             foreach (var item in chunked)
             {
