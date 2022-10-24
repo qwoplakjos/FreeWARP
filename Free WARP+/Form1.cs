@@ -257,7 +257,6 @@ namespace Free_WARP_
 
             public void StartChecking()
             {
-
                 foreach (var item in Proxies)
                 {
                     Check(item);
