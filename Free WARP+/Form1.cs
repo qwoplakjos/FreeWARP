@@ -244,14 +244,14 @@ namespace Free_WARP_
 
         public class ProxyCheck
         {
-            public ConcurrentDictionary<Proxy, int> Proxies { get; protected set; } = new ConcurrentDictionary<Proxy, int>();
+            public ConcurrentBag<Proxy> Proxies { get; protected set; } = new ConcurrentBag<Proxy>();
 
             public ProxyCheck(List<Proxy> proxies)
             {
 
                 for (int i = 0; i < proxies.Count; i++)
                 {
-                    Proxies.TryAdd(proxies[i], i);
+                    Proxies.Add(proxies[i]);
                 }
             }
 
@@ -261,23 +261,11 @@ namespace Free_WARP_
                 {
                     Check(item);
                 }
-
                 Thread.Sleep(20000);
             }
 
-            private ProxyClient GetProxy(Proxy proxy)
-            {
-                switch (proxy.type)
-                {
-                    case ProxyType.HTTP: return HttpProxyClient.Parse(proxy.adress);
-                    case ProxyType.Socks4: return Socks4ProxyClient.Parse(proxy.adress);
-                    case ProxyType.Socks5: return Socks5ProxyClient.Parse(proxy.adress);
-                    default: return HttpProxyClient.Parse(proxy.adress);
-                }
-            }
 
-
-            private void Check(KeyValuePair<Proxy, int> proxy)
+            private void Check(Proxy proxy)
             {
 
                 using (var request = new HttpRequest())
@@ -292,7 +280,7 @@ namespace Free_WARP_
                         string referer = referCode;
                         string json = $"{{'install_id': '{install_id}', 'key': '{key}', 'tos': '{tos}', 'fcm_token': '{fcm_token}','referrer': '{referer}','warp_enabled': false, 'type': 'Android','locale': 'en_GB'}}".Replace("'", "\"");
 
-                        request.Proxy = GetProxy(proxy.Key);
+                        request.Proxy = ProxyClient.Parse(proxy.type, proxy.adress);
 
                         request.AddHeader("Accept-Encoding", "gzip");
                         request.AddHeader("Host", "api.cloudflareclient.com");
@@ -306,7 +294,6 @@ namespace Free_WARP_
                     }
                     catch
                     {
-                        //Proxies.TryRemove(proxy.Key, out int _);
                         Interlocked.Increment(ref totalBad);
                     }
                 }
