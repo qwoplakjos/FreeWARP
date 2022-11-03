@@ -21,3 +21,7 @@ Proxies are loaded through a file with a new proxy on each line like this:
 ### Screenshot of GUI
 
 ![image](https://user-images.githubusercontent.com/60236726/197609514-1a71895e-fbc8-4f32-8f73-aa7dbeeb3ed7.png)
+
+
+
+[Original by ALIILAPRO](https://github.com/ALIILAPRO/warp-plus-cloudflare)
